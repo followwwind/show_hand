@@ -5,13 +5,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import com.wind.model.SocketChannel;
+
 public class ClientHandler implements Runnable{
 	
-	private Socket socket;
+	private SocketChannel socket;
 	
 	
 	
-	public ClientHandler(Socket socket) {
+	public ClientHandler(SocketChannel socket) {
 		super();
 		this.socket = socket;
 	}
@@ -21,11 +23,9 @@ public class ClientHandler implements Runnable{
 	@Override
 	public void run() {
 		try {
-			InputStream in = socket.getInputStream();
-			InputStreamReader isr = new InputStreamReader(in, "UTF-8");
-			BufferedReader br = new BufferedReader(isr);
+			BufferedReader in = socket.getInput();
 			String message = null;
-			while ((message = br.readLine()) != null) {
+			while ((message = in.readLine()) != null) {
 				System.out.println(message);
 			}
 

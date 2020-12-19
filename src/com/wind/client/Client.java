@@ -1,15 +1,20 @@
 package com.wind.client;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.net.Socket;
 
+import com.alibaba.fastjson.JSON;
 import com.wind.config.Const;
+import com.wind.model.MsgModel;
+import com.wind.model.SocketChannel;
 
 public class Client {
 
 	// 用于与服务端通信的Socket
-	private Socket socket;
+	private SocketChannel socket;
+	
 	private String ip;
-
 	/**
 	 * 构造方法，用来初始化客户端
 	 * 
@@ -25,12 +30,30 @@ public class Client {
 			 */
 			System.out.println("正在连接服务端...");
 			this.ip = ip;
-			this.socket = new Socket(ip, Const.PORT);
+			this.socket = new SocketChannel(new Socket(ip, Const.PORT));
 			System.out.println("与服务端连接完毕！");
 		} catch (Exception e) {
 			System.out.println("初始化失败!");
 			throw e;
 		}
+	}
+	
+	/**
+	 * 发送消息
+	 * @param model
+	 */
+	public boolean sendMsg(MsgModel model) {
+		if(model == null) {
+			return false;
+		}
+		BufferedWriter output = socket.getOutput();
+		try {
+			output.write(JSON.toJSONString(model));
+			output.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 	
 	/**
@@ -44,30 +67,33 @@ public class Client {
 			ClientHandler handler = new ClientHandler(this.socket);
 			Thread t = new Thread(handler);
 			t.start();
-
-			/*
-			 * Socket提供了一个获取输出流的方法， 用来将输出写出，而写出的数据就通过 网络发送给服务端了。
-			 */
-//			OutputStream out = socket.getOutputStream();
-//			OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8");
-//			PrintWriter pw = new PrintWriter(osw, true);
-//
-//			Scanner scanner = new Scanner(System.in);
-//
-//			while (true) {
-//				String message = scanner.nextLine();
-//				pw.println(message);
-//			}
-
 		} catch (Exception e) {
 			System.out.println("客户端运行失败!");
 			throw e;
 		}
 	}
+	
+	
+
+	public SocketChannel getSocket() {
+		return socket;
+	}
+
+	public void setSocket(SocketChannel socket) {
+		this.socket = socket;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 
 	public static void main(String[] args) {
 		try {
-			Client client = new Client("127.0.0.1");
+			Client client = new Client(Const.IP);
 			client.start();
 		} catch (Exception e) {
 			System.out.println("客户端运行失败!");

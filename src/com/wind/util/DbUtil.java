@@ -40,7 +40,7 @@ public class DbUtil {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://127.0.0.1:3306/show_hand?"
                     + "useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false";
-            conn = DriverManager.getConnection(url, "root", "123456");
+            conn = DriverManager.getConnection(url, "root", "0follow0");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DbUtil.class.getName()).log(Level.SEVERE, null, ex);
         }

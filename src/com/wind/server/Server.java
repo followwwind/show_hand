@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.wind.config.Const;
+import com.wind.model.SocketChannel;
 
 /**
  * 服务器
@@ -38,17 +39,19 @@ public class Server {
 	 */
 	public void start() throws Exception {
 		try {
+			System.out.println("等待客户端连接...");
 			/*
 			 * ServerSocket提供了一个方法: Socket accept() 该方法是一个阻塞方法，用于监听其打开的
 			 * 8088端口，当一个客户端通过该端口与 服务端连接时，accept方法就会解除阻塞 然后创建一个Socket实例并返回。这个
 			 * Socket的作用就是与刚刚连上的客户端进行 通讯。
 			 */
 			while (true) {
-				System.out.println("等待客户端连接...");
 				Socket socket = server.accept();
+				SocketChannel channel = new SocketChannel(socket);
+				CacheManager.CHANNEL_LIST.add(channel);
 				System.out.println("一个客户端连接了!");
 				// 启动一个线程来处理该客户端的交互工作
-				ServerHandler handler = new ServerHandler(socket);
+				ServerHandler handler = new ServerHandler(channel);
 				Thread t = new Thread(handler);
 				t.start();
 			}

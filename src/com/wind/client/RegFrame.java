@@ -2,6 +2,7 @@ package com.wind.client;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -97,6 +98,7 @@ public class RegFrame extends JFrame{
 				user.setUsername(username);
 				user.setNickname(nickname);
 				user.setPassword(pwd);
+				user.setAmount(BigDecimal.valueOf(10000));
 				userDao.insert(user);
 				JOptionPane.showMessageDialog(null, "注册成功");
 				close();

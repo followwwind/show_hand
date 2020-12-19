@@ -1,5 +1,7 @@
 package com.wind.model;
 
+import java.util.List;
+
 public class Room {
 	
 	private Integer id;
@@ -7,6 +9,11 @@ public class Room {
 	private String name;
 	
 	private Integer count;
+	
+	/**
+	 * 用户id列表
+	 */
+	private List<Integer> idList;
 
 	public Integer getId() {
 		return id;
@@ -31,4 +38,14 @@ public class Room {
 	public void setCount(Integer count) {
 		this.count = count;
 	}
+
+	public List<Integer> getIdList() {
+		return idList;
+	}
+
+	public void setIdList(List<Integer> idList) {
+		this.idList = idList;
+	}
+	
+	
 }

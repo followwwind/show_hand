@@ -46,7 +46,7 @@ public class UserDao {
     }
 	
 	/**
-	 * 查询所有房间
+	 * 余额排行
 	 * @return
 	 */
 	public List<User> orderList() {
